@@ -8,6 +8,12 @@ function Register(id){
 	this.open = false;
 	this.express = false;
 	this.line = new Array();
+
+	this.status = function () {
+		console.log("\nRegister #" + this.ID + " status:");
+		console.log("             Open = " + this.open);
+		console.log("          Express = "+ this.express);
+	}
 }
 
 function Store(registers) {
@@ -31,22 +37,86 @@ function Store(registers) {
 
 		return l;
 	};
+
+	this.regs_status = function () {
+		console.log(" ");
+		for(i = 0; i<this.num_regs; i++){
+			console.log("Register #" + this.regs[i].ID + " status:");
+			console.log("             Open = " + this.regs[i].open);
+			console.log("          Express = "+ this.regs[i].express);
+		}
+
+	}
 }
 
-const readline = require('readline');
+console.log('About to begin simulation...\n');
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+var store;
+var readline = require('readline');
+var rl = readline.createInterface(process.stdin, process.stdout, null);
+
+rl.setPrompt("]");
+rl.question('Hi! How many registers do you want? ', function(answer) {
+
+	store = new Store(answer);
+	store.regs_status();
+	rl.prompt();
 });
 
-// rl.question('Hi! How many registers do you want? ', (answer) => {
-  // TODO: Log the answer in a database
-  var store = new Store(answer);
+rl.on('line', function (cmd) {
 
-//   rl.close();
-// });
+	if(cmd == "exit"){
+	// Exit the loop and end the simulation
+		rl.close();
+		process.stdin.destroy();
 
-for(i = 0; i<store.num_regs; i++){
-	console.log("Register #" + store.regs[i].id + " set-up and ready to go.");
-}
+	}else if(cmd.substring(0,4) == "open"){
+	// Open a register using a given ID
+		var str = cmd.substring(5);
+		var x = parseInt(str) - 1;
+		store.regs[x].open = true;
+		store.regs[x].status();
+		rl.prompt();
+
+	}else if(cmd.substring(0,5) == "close"){
+	// Close a register using a given ID
+		var str = cmd.substring(6);
+		var x = parseInt(str) - 1;
+		store.regs[x].open = false;
+		store.regs[x].status();
+		rl.prompt();
+
+	}else if(cmd.substring(0,4) == "flip"){
+	// Flip a register between express and regular using a given ID
+		var str = cmd.substring(5);
+		var x = parseInt(str) - 1;
+
+		if(store.regs[x].express){
+			store.regs[x].express = false;
+		}else{
+			store.regs[x].express = true;
+		}
+
+		store.regs[x].status();
+		rl.prompt();
+
+	}else if(cmd == "status"){
+	// Display status of all registers
+		store.regs_status();
+		rl.prompt();
+
+	}else if(cmd == "help"){
+	// Displays commands available
+		console.log("\nType \'exit\' to end simulation.");
+		console.log("Type \'open X\' to open register with ID # \'X\'");
+		console.log("Type \'close X\' to close register with ID # \'X\'");
+		console.log("Type \'status\' to check the current status of the registers");
+		rl.prompt();
+
+	}else{
+	// Base case for unrecognized input
+		console.log("Not a command... Type \'help\' for usage.");
+		rl.prompt();
+
+	}
+});
