@@ -71,33 +71,60 @@ rl.on('line', function (cmd) {
 		process.stdin.destroy();
 
 	}else if(cmd.substring(0,4) == "open"){
-	// Open a register using a given ID
+	// Open a register using a given ID or 'all' to open all registers
 		var str = cmd.substring(5);
-		var x = parseInt(str) - 1;
-		store.regs[x].open = true;
-		store.regs[x].status();
+		if (str=="all"){
+			for(i = 0; i < store.num_regs; i++){
+				store.regs[i].open = true;
+			}
+			store.regs_status();
+		}else{
+			var x = parseInt(str) - 1;
+			store.regs[x].open = true;
+			store.regs[x].status();
+		}
 		rl.prompt();
 
 	}else if(cmd.substring(0,5) == "close"){
 	// Close a register using a given ID
 		var str = cmd.substring(6);
-		var x = parseInt(str) - 1;
-		store.regs[x].open = false;
-		store.regs[x].status();
+		if (str=="all"){
+			for(i = 0; i < store.num_regs; i++){
+				store.regs[i].open = false;
+			}
+			store.regs_status();
+		}else{
+			var x = parseInt(str) - 1;
+			store.regs[x].open = false;
+			store.regs[x].status();
+		}
 		rl.prompt();
 
 	}else if(cmd.substring(0,4) == "flip"){
 	// Flip a register between express and regular using a given ID
 		var str = cmd.substring(5);
-		var x = parseInt(str) - 1;
-
-		if(store.regs[x].express){
-			store.regs[x].express = false;
+		if (str=="all"){
+			for(i = 0; i < store.num_regs; i++){
+				if(store.regs[i].express){
+					store.regs[i].express = false;
+				}else{
+					store.regs[i].express = true;
+				}
+			}
+			store.regs_status();
 		}else{
-			store.regs[x].express = true;
+
+			var x = parseInt(str) - 1;
+
+			if(store.regs[x].express){
+				store.regs[x].express = false;
+			}else{
+				store.regs[x].express = true;
+			}
+
+			store.regs[x].status();
 		}
 
-		store.regs[x].status();
 		rl.prompt();
 
 	}else if(cmd == "status"){
@@ -109,7 +136,9 @@ rl.on('line', function (cmd) {
 	// Displays commands available
 		console.log("\nType \'exit\' to end simulation.");
 		console.log("Type \'open X\' to open register with ID # \'X\'");
+		console.log("  or \'open all\' to open all registers");
 		console.log("Type \'close X\' to close register with ID # \'X\'");
+		console.log("  or \'close all\' to close all registers");
 		console.log("Type \'status\' to check the current status of the registers");
 		rl.prompt();
 
