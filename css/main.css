@@ -1,0 +1,9 @@
+body {
+	background-color: rgba(147,217,204,0.5);
+}
+
+#canvas1 {
+	border-color: green;
+    border-radius: 10px;
+    border-style: double;
+}
