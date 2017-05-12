@@ -1,32 +1,10 @@
-window.onload = drawStatic; //Execute draw function when DOM is ready;
+function Register(id, given_x, given_y){
 
-function drawStatic(){
-
-	//Assign canvas element to a variable;
-	var canvas = document.getElementById("canvas1");
-	//Create HTML5 context object to enable draw methods
-	var ctx = canvas.getContext("2d");
-
-	//Fill style (r, g, b, alpha);
-	ctx.fillStyle = "rgba(245,5,5,1)";
-	ctx.shadowColor = "rgba(0,0,0,1)";
-	ctx.shadowBlur = 20;
-
-	//Fill Rectangle (X, Y, width, height);
-	// ctx.fillRect (5, 5, 250, 150);
-
-	//Outline Rectangle (X, Y, width, height);
-	// ctx.strokeStyle="#000000";
-	// ctx.strokeRect(5,5,250,150);
-
-}
-
-function Customer(groceries, out_time, given_x, given_y){
-	this.cartsize = groceries;
-	this.wait_time = out_time;
+	this.ID = id;
 	this.x = given_x;
 	this.y = given_y;
 	this.on = false;
+	this.express = false;
 
 	this.draw = function (){
 
@@ -111,9 +89,44 @@ function Customer(groceries, out_time, given_x, given_y){
 	return this;
 }
 
-var cust_1 = new Customer(50, 50, 25, 25);
-var cust_2 = new Customer(50, 50, 75, 25);
-var cust_3 = new Customer(50, 50, 125, 25);
+var num_regs;
+var registers = new Array();
+var x_start = 25;
+var y_start = 25;
+
+function loadRegs(){
+
+	num_regs = document.getElementById("regs_num").value;
+	document.getElementById("regs_num").value = '';
+
+	if(Number.isInteger(parseInt(num_regs))){
+
+		//Assign canvas element to a variable;
+		var canvas = document.getElementById("canvas1");
+		//Create HTML5 context object to enable draw methods
+		var ctx = canvas.getContext("2d");
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		registers = [];
+		x_start = 25;
+		y_start = 25;
+
+		if(num_regs>10){
+			alert('MAX number is 10. Value set to 10');
+			num_regs = 10;
+		}
+
+		for(i = 0; i < num_regs; i++){
+			registers.push(new Register(i, x_start, y_start));
+			registers[i].draw();
+			x_start += 50;
+		}
+
+	}else{
+		alert("Need a number!");
+		num_regs = 0;
+	}
+}
 
 document.addEventListener('keydown', function(event) {
 
@@ -122,47 +135,94 @@ document.addEventListener('keydown', function(event) {
 	//Create HTML5 context object to enable draw methods
 	var ctx = canvas.getContext("2d");
 
-    if(event.keyCode == 37) {
-        ctx.fillStyle = "rgba(220,50,50,1)";
-        ctx.shadowColor = "rgba(0,0,0,1)";
-        ctx.shadowBlur = 10;
-        ctx.fillRect (5, 5, 250, 150);
-        ctx.strokeStyle="#000000";
-		ctx.strokeRect(5,5,250,150);
-    }
-    else if(event.keyCode == 39) {
-        ctx.clearRect(0, 0, 270, 165);
-    }
-    else if(event.keyCode == 67){
-    	cust_1.draw();
-    	cust_2.draw();
-    	cust_3.draw();
-    }
-    else if(event.keyCode == 49){
-    	if (cust_1.on){
-    		cust_1.to_red();
-    		cust_1.on = false;
+    if((event.keyCode == 49)&&(registers[0])){
+    	if (registers[0].on){
+    		registers[0].to_red();
+    		registers[0].on = false;
     	}else{
-	    	cust_1.to_green();
-	    	cust_1.on = true;
+	    	registers[0].to_green();
+	    	registers[0].on = true;
 	    }
     }
-    else if(event.keyCode == 50){
-    	if (cust_2.on){
-    		cust_2.to_red();
-    		cust_2.on = false;
+    else if((event.keyCode == 50)&&(registers[1])){
+    	if (registers[1].on){
+    		registers[1].to_red();
+    		registers[1].on = false;
     	}else{
-	    	cust_2.to_green();
-    		cust_2.on = true;
+	    	registers[1].to_green();
+	    	registers[1].on = true;
 	    }
     }
-    else if(event.keyCode == 51){
-    	if (cust_3.on){
-    		cust_3.to_red();
-    		cust_3.on = false;
+    else if((event.keyCode == 51)&&(registers[2])){
+    	if (registers[2].on){
+    		registers[2].to_red();
+    		registers[2].on = false;
     	}else{
-	    	cust_3.to_green();
-    		cust_3.on = true;
+	    	registers[2].to_green();
+	    	registers[2].on = true;
+	    }
+    }
+    else if((event.keyCode == 52)&&(registers[3])){
+    	if (registers[3].on){
+    		registers[3].to_red();
+    		registers[3].on = false;
+    	}else{
+	    	registers[3].to_green();
+	    	registers[3].on = true;
+	    }
+    }
+    else if((event.keyCode == 53)&&(registers[4])){
+    	if (registers[4].on){
+    		registers[4].to_red();
+    		registers[4].on = false;
+    	}else{
+	    	registers[4].to_green();
+	    	registers[4].on = true;
+	    }
+    }
+    else if((event.keyCode == 54)&&(registers[5])){
+    	if (registers[5].on){
+    		registers[5].to_red();
+    		registers[5].on = false;
+    	}else{
+	    	registers[5].to_green();
+	    	registers[5].on = true;
+	    }
+    }
+    else if((event.keyCode == 55)&&(registers[6])){
+    	if (registers[6].on){
+    		registers[6].to_red();
+    		registers[6].on = false;
+    	}else{
+	    	registers[6].to_green();
+	    	registers[6].on = true;
+	    }
+    }
+    else if((event.keyCode == 56)&&(registers[7])){
+    	if (registers[7].on){
+    		registers[7].to_red();
+    		registers[7].on = false;
+    	}else{
+	    	registers[7].to_green();
+	    	registers[7].on = true;
+	    }
+    }
+    else if((event.keyCode == 57)&&(registers[8])){
+    	if (registers[8].on){
+    		registers[8].to_red();
+    		registers[8].on = false;
+    	}else{
+	    	registers[8].to_green();
+	    	registers[8].on = true;
+	    }
+    }
+    else if((event.keyCode == 48)&&(registers[9])){
+    	if (registers[9].on){
+    		registers[9].to_red();
+    		registers[9].on = false;
+    	}else{
+	    	registers[9].to_green();
+	    	registers[9].on = true;
 	    }
     }
 });

@@ -1,9 +1,61 @@
+@import url('https://fonts.googleapis.com/css?family=BioRhyme:200,300,400,700,800');
+
 body {
-	background-color: rgba(147,217,204,0.5);
+	background-color: rgba(133,98,86,0.5);
+}
+
+.button {
+	background-color: rgba(144,195,212,0.7);
+	border-style: solid;
+	border-radius: 10px;
+	color: white;
+	padding: 5px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-family: 'BioRhyme', serif;
+	font-weight: 700;
+	font-size: 28px;
+}
+
+.textbox {
+	background-color: rgba(232,153,158,0.7);
+	border-style: solid;
+	border-radius: 10px;
+	color: black;
+	padding: 5px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-family: 'BioRhyme', serif;
+	font-weight: 400;
+	font-size: 28px;
+}
+
+#canvases {
+    position:relative;
+    width:975px;
+    height:570px;
 }
 
 #canvas1 {
+	position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
 	border-color: green;
     border-radius: 10px;
     border-style: double;
+}
+
+#canvas2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+
+#inputs {
+	float: right;
+	margin-bottom: 20px;
 }

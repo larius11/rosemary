@@ -7,8 +7,15 @@
 	</head>
 	<body>
 		<header>
-			<img src="imgs/heb.png" style="height: 60px; width: 180px;">
+				<img src="imgs/heb.png" style="height: 60px; width: 180px; margin-top: 10px; margin-bottom: 10px;">
+			<div id="inputs">
+				<input class="textbox" type="text" id="regs_num" placeholder="How many registers?">
+				<button class="button" onclick="loadRegs()"> Start!</button>
+			</div>
 		</header>
-		<canvas id="canvas1" width="975px" height="570px" ></canvas>
+		<div id="canvases">
+			<canvas id="canvas1" width="975px" height="570px" ></canvas>
+			<canvas id="canvas2" width="975px" height="570px" ></canvas>
+		</div>
 	</body>
 </html>
