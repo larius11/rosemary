@@ -34,8 +34,9 @@ body {
 
 #canvases {
     position:relative;
-    width:975px;
-    height:570px;
+    width: 100%;
+    min-height: 100vh;
+    max-height: 100%;
 }
 
 #canvas1 {

@@ -1,0 +1,62 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Ratio Simulator">
+    <meta name="author" content="Ricardo Riveron">
+    <link rel="icon" href="docs/heb.ico">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <title>Simulation:</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/cover.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="row" style="margin-bottom: 5px;">
+
+        <img src="imgs/heb.png" style="height: 60px; width: 180px; margin-top: 10px; margin-bottom: 10px;">
+        <input class="textbox" type="text" id="regs_num" placeholder="How many registers?">
+        <button class="button" onclick="loadRegs()"> Start!</button>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-2">
+          <div id="canvases">
+            <img id="reg_closed" src="sprites/closed.png" style="display: none;">
+            <img id="reg_open" src="sprites/open.png" style="display: none;">
+            <canvas id="canvas1" width="1200px" height="570px" style="width: 100%; height: 570px;"></canvas>
+            <canvas id="canvas2" width="1200px" height="570px" style="width: 100%; height: 570px;"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+          <p>Ratio simulator for <a href="https://heb.com">H-E-B</a>, by <a href="https://twitter.com/RiveronRKR">@RiveronRKR</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+
+    <!-- JS for canvas drawing and application -->
+    <script type="application/javascript" src="draw.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body>
+</html>

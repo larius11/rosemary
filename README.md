@@ -1,2 +1,2 @@
 # rosemary
-Experimenting with node.js and three.js to further develop our engineering skills. 
+Experimenting with canvases on javascript to develop interactive applications for the web. 

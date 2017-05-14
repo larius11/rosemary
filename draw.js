@@ -13,29 +13,9 @@ function Register(id, given_x, given_y){
 		//Create HTML5 context object to enable draw methods
 		var ctx = canvas.getContext("2d");
 
-		//Fill style (r, g, b, alpha);
-		ctx.fillStyle = "rgba(245,5,5,1)";
-		ctx.shadowColor = "rgba(0,0,0,1)";
-		ctx.shadowBlur = 1;
+		var img = document.getElementById("reg_closed");
+		ctx.drawImage(img,this.x,this.y);
 
-		//Outline Circle (X, Y, Radius, start angle, end angle);
-		ctx.beginPath();
-		ctx.arc(this.x,this.y,20,0,2*Math.PI);
-
-		//Fill Circle (Fills path drawn);
-		ctx.fill();
-		ctx.stroke();
-
-	}
-
-	this.erase = function (){
-
-		//Assign canvas element to a variable;
-		var canvas = document.getElementById("canvas1");
-		//Create HTML5 context object to enable draw methods
-		var ctx = canvas.getContext("2d");
-
-		ctx.clearRect(this.x-22,this.y-22,44,44);
 	}
 
 	this.to_green = function (){
@@ -45,20 +25,9 @@ function Register(id, given_x, given_y){
 		//Create HTML5 context object to enable draw methods
 		var ctx = canvas.getContext("2d");
 
-		ctx.clearRect(this.x-22,this.y-22,44,44);
-
-		//Fill style (r, g, b, alpha);
-		ctx.fillStyle = "rgba(31,171,40,1)";
-		ctx.shadowColor = "rgba(0,0,0,1)";
-		ctx.shadowBlur = 1;
-
-		//Outline Circle (X, Y, Radius, start angle, end angle);
-		ctx.beginPath();
-		ctx.arc(this.x,this.y,20,0,2*Math.PI);
-
-		//Fill Circle (Fills path drawn);
-		ctx.fill();
-		ctx.stroke();
+		ctx.clearRect(this.x,this.y,100,300);
+		var img = document.getElementById("reg_open");
+		ctx.drawImage(img,this.x,this.y);		
 
 	}
 
@@ -69,20 +38,9 @@ function Register(id, given_x, given_y){
 		//Create HTML5 context object to enable draw methods
 		var ctx = canvas.getContext("2d");
 
-		ctx.clearRect(this.x-22,this.y-22,44,44);
-
-		//Fill style (r, g, b, alpha);
-		ctx.fillStyle = "rgba(245,5,5,1)";
-		ctx.shadowColor = "rgba(0,0,0,1)";
-		ctx.shadowBlur = 1;
-
-		//Outline Circle (X, Y, Radius, start angle, end angle);
-		ctx.beginPath();
-		ctx.arc(this.x,this.y,20,0,2*Math.PI);
-
-		//Fill Circle (Fills path drawn);
-		ctx.fill();
-		ctx.stroke();
+		ctx.clearRect(this.x,this.y,100,300);
+		var img = document.getElementById("reg_closed");
+		ctx.drawImage(img,this.x,this.y);
 
 	}
 
@@ -91,8 +49,8 @@ function Register(id, given_x, given_y){
 
 var num_regs;
 var registers = new Array();
-var x_start = 25;
-var y_start = 25;
+var x_start = 15;
+var y_start = 250;
 
 function loadRegs(){
 
@@ -108,8 +66,7 @@ function loadRegs(){
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		registers = [];
-		x_start = 25;
-		y_start = 25;
+		x_start = 15;
 
 		if(num_regs>10){
 			alert('MAX number is 10. Value set to 10');
@@ -119,7 +76,7 @@ function loadRegs(){
 		for(i = 0; i < num_regs; i++){
 			registers.push(new Register(i, x_start, y_start));
 			registers[i].draw();
-			x_start += 50;
+			x_start += 110;
 		}
 
 	}else{
