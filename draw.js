@@ -3,14 +3,51 @@ var registers = new Array();
 var waitlist = new Array();
 var x_start = 15;
 var y_start = 250;
+var glob_ID = 1;
+var pause = false;
 
 //Assign canvas element to a variable;
 var canvas = document.getElementById("canvas1");
 //Create HTML5 context object to enable draw methods
 var ctx = canvas.getContext("2d");
 ctx.font = "400 15px Ubuntu";
-ctx.fillStyle = 'green';
+ctx.fillStyle = 'rgb(4,222,4)';
 ctx.lineWidth = 5;
+
+function init(){
+
+	populateStore();
+
+	num_regs = document.getElementById("regs_num").value;
+	document.getElementById("regs_num").value = '';
+
+	if(Number.isInteger(parseInt(num_regs))){
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		x_start = 15;
+		registers = [];
+
+		if(num_regs>10){
+			alert('MAX number is 10. Value set to 10');
+			num_regs = 10;
+		}
+
+		for(var i = 0; i < num_regs; i++){
+			registers.push(new Register(i, x_start, y_start));
+			// for(j = 0; j<=i; j++){
+			// 	registers[i].line.push(new Customer(j,10,-10));
+			// }
+			x_start += 110;
+		}
+
+		window.setInterval(update, 30);
+		window.setInterval(populateStore, 10000);
+
+	}else{
+		alert("Need a number!");
+		num_regs = 0;
+	}
+}
 
 function Register(id, given_x, given_y){
 
@@ -53,9 +90,13 @@ function Register(id, given_x, given_y){
 	return this;
 }
 
-function Customer(id, bag_size){
+function Customer(bag_size){
 
-	this.ID = id;
+	if (glob_ID == 100){
+		glob_ID = 1;
+	}
+
+	this.ID = glob_ID++;
 	this.bag_size = bag_size;
 	this.wait_ticks = bag_size * -500;
 
@@ -63,71 +104,44 @@ function Customer(id, bag_size){
 
 		ctx.beginPath();
 		ctx.arc(given_x,given_y,24,0,2*Math.PI);
-		if(this.bag_size<16){
-			ctx.fillStyle = 'green';
-		}else if (this.bag_size<31){
-			ctx.fillStyle = 'orange';
-		}else {
-			ctx.fillStyle = 'red';
+
+		var R, G, slope;
+
+		slope = 7;
+		R = 4;
+		G = 222;
+
+		for (var i = 0; (i < this.bag_size)&&(i < 32) ; i++) {
+			R += slope;
+			G -= slope;
 		}
+
+		ctx.fillStyle = 'rgb('+R+', '+G+', 4)';
+
+
+		// if(this.bag_size<16){
+		// 	ctx.fillStyle = 'rgb(4,222,4)';
+		// }else if (this.bag_size<31){
+		// 	ctx.fillStyle = 'rgb(222,222,4)';
+		// }else {
+		// 	ctx.fillStyle = 'rgb(222,4,4)';
+		// }
+
       	ctx.fill();
 		ctx.stroke();
 
+		ctx.fillStyle = 'black';
+		ctx.textAlign = "center"; 
+		ctx.fillText(this.ID, given_x, given_y);
+
 		if (waiting){
 			var txt = Math.ceil(-1*(this.wait_ticks/1000)) + " secs";
-			ctx.fillStyle = 'black';
-			ctx.fillText(txt, given_x - 24, given_y+40);			
+			// ctx.fillStyle = 'black';
+			ctx.fillText(txt, given_x, given_y+40);			
 		}
 
 	};
 
-}
-
-function init(){
-
-	var ran_customers, ran_bagsize;
-
-	ran_customers = Math.floor(Math.random() * 21);
-
-	for(var i = 0; i<ran_customers; i++){
-
-		ran_bagsize = Math.floor(Math.random() * 51);
-		waitlist.push(new Customer(i, ran_bagsize));
-
-	}
-
-	waitlist.sort(function(a, b){
-		return b.wait_ticks - a.wait_ticks;
-	});
-
-	num_regs = document.getElementById("regs_num").value;
-	document.getElementById("regs_num").value = '';
-
-	if(Number.isInteger(parseInt(num_regs))){
-
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		x_start = 15;
-		registers = [];
-
-		if(num_regs>10){
-			alert('MAX number is 10. Value set to 10');
-			num_regs = 10;
-		}
-
-		for(var i = 0; i < num_regs; i++){
-			registers.push(new Register(i, x_start, y_start));
-			// for(j = 0; j<=i; j++){
-			// 	registers[i].line.push(new Customer(j,10,-10));
-			// }
-			x_start += 110;
-		}
-
-		window.setInterval(update, 30);
-
-	}else{
-		alert("Need a number!");
-		num_regs = 0;
-	}
 }
 
 function chooseRegister(cust){
@@ -193,29 +207,75 @@ function chooseRegister(cust){
 
 }
 
-function update() {
+function updateRegisters() {
 
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	for (var i = 0; i < registers.length; i++) {
 
-	var wait_x = 32;
-	var wait_y = 32;
+		for (var j = 0; j < registers[i].line.length; j++) {
 
-	for(var i = 0; waitlist[i]; i++){
-		if (waitlist[i].wait_ticks < 0){
-			waitlist[i].draw( wait_x, wait_y , true);
-			waitlist[i].wait_ticks+=30;
-			wait_x += 72;
-		}else{
-			var movedCustomer = waitlist.splice(i, 1)[0];
-			chooseRegister(movedCustomer);
-			i--;
+			var current = registers[i].line[j];
+
+			if (j==0)
+				current.bag_size -= 0.14;
+			current.wait_ticks += 30;
+			
+		}
+
+		if (registers[i].line[0])
+			if (registers[i].line[0].bag_size<=0)
+				registers[i].line.shift();
+		
+	}
+
+}
+
+function populateStore() {
+	if (!pause){
+		if (waitlist.length <= 50){
+			var ran_customers, ran_bagsize;
+
+			ran_customers = Math.floor(Math.random() * 21);
+
+			for(var i = 0; i<ran_customers; i++){
+
+				ran_bagsize = Math.floor(Math.random() * 51);
+				waitlist.push(new Customer(ran_bagsize));
+
+			}
+
+			waitlist.sort(function(a, b){
+				return b.wait_ticks - a.wait_ticks;
+			});
 		}
 	}
+}
 
-	for(var i = 0; registers[i]; i++){
-		registers[i].draw();
+function update() {
+
+	if(!pause){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		var wait_x = 32;
+		var wait_y = 32;
+
+		for(var i = 0; waitlist[i]; i++){
+			if (waitlist[i].wait_ticks < 0){
+				waitlist[i].draw( wait_x, wait_y , true);
+				waitlist[i].wait_ticks+=30;
+				wait_x += 72;
+			}else{
+				var movedCustomer = waitlist.splice(i, 1)[0];
+				chooseRegister(movedCustomer);
+				i--;
+			}
+		}
+
+		for(var i = 0; registers[i]; i++){
+			registers[i].draw();
+		}
+
+		updateRegisters();
 	}
-
 
 }
 
@@ -383,6 +443,9 @@ document.addEventListener('keydown', function(event) {
     	}else{
 	    	registers[9].express = true;
 	    }
+    }
+    else if(event.keyCode == 32){
+    	pause = !pause;
     }
 });
 
