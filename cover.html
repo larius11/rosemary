@@ -22,11 +22,13 @@
     <div class="container-fluid">
 
       <div class="row" style="margin-bottom: 5px;">
-
-        <img src="imgs/heb.png" style="height: 60px; width: 180px; margin-top: 10px; margin-bottom: 10px;">
-        <input class="textbox" type="text" id="regs_num" placeholder="How many registers?">
-        <button class="button" onclick="init()"> Start!</button>
-
+        <div class="col-sm-4">
+          <img src="imgs/heb.png" style="height: 60px; width: 180px; margin-top: 10px; margin-bottom: 10px; float: left;">
+        </div>
+        <div class="col-sm-8" style="margin-top: 10px;">
+          <input class="textbox" type="text" id="regs_num" placeholder="How many registers?">
+          <button class="button" onclick="init()"> Start!</button>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-8">
@@ -39,22 +41,21 @@
           </div>
         </div>
         <div class="col-sm-4">
-          <div class="panel panel-primary" style="color: black; background-color: cadetblue;">
-            <div class="panel-body">
-              <ul style="list-style: none;">
-                <li>Customer 1 - Wait Time = 69secs.</li>
-                <li>Customer 2 - Wait Time = 69secs.</li>
-                <li>Customer 3 - Wait Time = 69secs.</li>
-                <li>Customer 4 - Wait Time = 69secs.</li>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <label style="font-size: large; margin-bottom: 0px;">Wait Times</label>
+            </div>
+            <div class="panel-body" style="background-color: #333; color: white;">
+              <ul style="list-style: none; height: 400px; overflow: auto" id="wait_display">
               </ul>
             </div>
-            <div class="panel-footer">Wait Times</div>
           </div>
+          <button class="button" onclick="clearWait()">CLEAR</button>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-          <p>Ratio simulator for <a href="https://heb.com">H-E-B</a>, by <a href="https://twitter.com/RiveronRKR">@RiveronRKR</a>.</p>
+          <p>Ratio simulator for <a href="https://heb.com">H-E-B</a>, by <a href="https://twitter.com/RiveronRKR">@RiveronRKR</a> &amp; <a href="https://twitter.com/KalebAlanis">@KalebAlanis</a>.</p>
         </div>
       </div>
     </div>
