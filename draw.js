@@ -25,9 +25,12 @@ function Register(id, given_x, given_y){
 
 		var img;
 
-		if (this.on){
+		if (this.on && this.express){
+			img = document.getElementById("reg_express");
+		}else if (this.on){
 			img = document.getElementById("reg_open");
 		} else {
+			this.express = false;
 			img = document.getElementById("reg_closed");
 		}
 		
@@ -36,10 +39,6 @@ function Register(id, given_x, given_y){
 		var y_offset = 185;
 
 		for (var i = 0; (this.line[i]) && (i < 3); i++) {
-			// ctx.beginPath();
-			// ctx.arc(this.x+50,this.y+y_offset,24,0,2*Math.PI);
-	  //     	ctx.fill();
-			// ctx.stroke();
 			this.line[i].draw(this.x+50,this.y+y_offset, false);
 			y_offset -= 60;
 		}
@@ -58,7 +57,7 @@ function Customer(id, bag_size){
 
 	this.ID = id;
 	this.bag_size = bag_size;
-	this.wait_ticks = bag_size * -50;
+	this.wait_ticks = bag_size * -500;
 
 	this.draw = function (given_x, given_y, waiting) {
 
@@ -75,7 +74,7 @@ function Customer(id, bag_size){
 		ctx.stroke();
 
 		if (waiting){
-			var txt = (-1*(this.wait_ticks/1000)) + " secs";
+			var txt = Math.ceil(-1*(this.wait_ticks/1000)) + " secs";
 			ctx.fillStyle = 'black';
 			ctx.fillText(txt, given_x - 24, given_y+40);			
 		}
@@ -123,7 +122,7 @@ function init(){
 			x_start += 110;
 		}
 
-		window.setInterval(drawLoop, 30);
+		window.setInterval(update, 30);
 
 	}else{
 		alert("Need a number!");
@@ -131,20 +130,90 @@ function init(){
 	}
 }
 
-function drawLoop() {
+function chooseRegister(cust){
+
+	//Select a desireable register. 
+	//Add the customer to a register's line
+
+	var coin = Math.random();
+	var p = 0.5;
+	var result = coin - p;
+	var small_order = (cust.bag_size < 16);
+
+	if (result < 0){
+		//smart
+		var best;
+
+		for (var i = 0; i < registers.length; i++) {
+			
+			if (registers[i].on){
+				if(small_order && registers[i].express){
+					if (!best){
+						best = registers[i];
+					}else if (best.line.length > registers[i].line.length){
+						best = registers[i];
+					}
+				}else if (!small_order && !registers[i].express){
+					if (!best){
+						best = registers[i];
+					}else if (best.line.length > registers[i].line.length){
+						best = registers[i];
+					}
+				}
+			}
+
+		}
+
+		if (best){
+			best.line.push(cust);
+		}else{
+			cust.wait_ticks = -30;
+			waitlist.push(cust);
+		}
+
+	}else{
+		//pendejo
+
+		var temp = new Array();
+
+		for (var i = 0; i < registers.length; i++) {
+			if (registers[i].on){
+				temp.push(registers[i]);		
+			}
+		}
+
+		if (temp.length>0){
+			temp[Math.floor(Math.random()*temp.length)].line.push(cust);
+		}else{
+			cust.wait_ticks = -30;
+			waitlist.push(cust);
+		}
+
+	}
+
+}
+
+function update() {
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	var wait_x = 32;
 	var wait_y = 32;
 
-	for(var i = 0; registers[i]; i++){
-		registers[i].draw();
+	for(var i = 0; waitlist[i]; i++){
+		if (waitlist[i].wait_ticks < 0){
+			waitlist[i].draw( wait_x, wait_y , true);
+			waitlist[i].wait_ticks+=30;
+			wait_x += 72;
+		}else{
+			var movedCustomer = waitlist.splice(i, 1)[0];
+			chooseRegister(movedCustomer);
+			i--;
+		}
 	}
 
-	for(var i = 0; waitlist[i]; i++){
-		waitlist[i].draw( wait_x, wait_y , true);
-		wait_x += 72;
+	for(var i = 0; registers[i]; i++){
+		registers[i].draw();
 	}
 
 
@@ -240,6 +309,79 @@ document.addEventListener('keydown', function(event) {
     	}else{
 	    	// registers[9].to_green();
 	    	registers[9].on = true;
+	    }
+    }
+
+    // EXPRESS KEYS!!!!
+
+    if((event.keyCode == 81)&&(registers[0])){
+    	if (registers[0].express){
+    		registers[0].express = false;
+    	}else{
+	    	registers[0].express = true;
+	    }
+    }
+    else if((event.keyCode == 87)&&(registers[1])){
+    	if (registers[1].express){
+    		registers[1].express = false;
+    	}else{
+	    	registers[1].express = true;
+	    }
+    }
+    else if((event.keyCode == 69)&&(registers[2])){
+    	if (registers[2].express){
+    		registers[2].express = false;
+    	}else{
+	    	registers[2].express = true;
+	    }
+    }
+    else if((event.keyCode == 82)&&(registers[3])){
+    	if (registers[3].express){
+    		registers[3].express = false;
+    	}else{
+	    	registers[3].express = true;
+	    }
+    }
+    else if((event.keyCode == 84)&&(registers[4])){
+    	if (registers[4].express){
+    		registers[4].express = false;
+    	}else{
+	    	registers[4].express = true;
+	    }
+    }
+    else if((event.keyCode == 89)&&(registers[5])){
+    	if (registers[5].express){
+    		registers[5].express = false;
+    	}else{
+	    	registers[5].express = true;
+	    }
+    }
+    else if((event.keyCode == 85)&&(registers[6])){
+    	if (registers[6].express){
+    		registers[6].express = false;
+    	}else{
+	    	registers[6].express = true;
+	    }
+    }
+    else if((event.keyCode == 73)&&(registers[7])){
+    	if (registers[7].express){
+    		registers[7].express = false;
+    	}else{
+	    	registers[7].express = true;
+	    }
+    }
+    else if((event.keyCode == 79)&&(registers[8])){
+    	if (registers[8].express){
+    		registers[8].express = false;
+    	}else{
+	    	registers[8].express = true;
+	    }
+    }
+    else if((event.keyCode == 80)&&(registers[9])){
+    	if (registers[9].express){
+    		registers[9].express = false;
+    	}else{
+	    	registers[9].express = true;
 	    }
     }
 });
